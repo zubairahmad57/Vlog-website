@@ -1,64 +1,63 @@
  document.addEventListener("DOMContentLoaded", () => {
-    const themeLight = document.getElementById('theme-light');
-    const themeDark = document.getElementById('theme-dark');
-    const themeBlue = document.getElementById('theme-blue');
-    const themeGreen = document.getElementById('theme-green');
+    const themeToggle = document.getElementById('theme-toggle');
+    const createNewBlogButton = document.getElementById('create-new-blog');
+    const createBlogSection = document.getElementById('create-blog-section');
+    const blogForm = document.getElementById('blog-form');
+    const blogSection = document.getElementById('blog-section');
     const body = document.body;
 
-    themeLight.addEventListener('click', () => {
-        body.classList.remove('theme-dark', 'theme-blue', 'theme-green');
-        body.classList.add('theme-light');
-    });
-
-    themeDark.addEventListener('click', () => {
-        body.classList.remove('theme-light', 'theme-blue', 'theme-green');
-        body.classList.add('theme-dark');
-    });
-
-    themeBlue.addEventListener('click', () => {
-        body.classList.remove('theme-light', 'theme-dark', 'theme-green');
-        body.classList.add('theme-blue');
-    });
-
-    themeGreen.addEventListener('click', () => {
-        body.classList.remove('theme-light', 'theme-dark', 'theme-blue');
-        body.classList.add('theme-green');
-    });
-
-    function markAsRead(element) {
-        element.classList.toggle('read');
-    }
-
-    const photoForm = document.getElementById('photo-form');
-    const photoSection = document.getElementById('photo-section');
-
-    photoForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const photoUrl = document.getElementById('photo-url').value;
-        if (photoUrl) {
-            const photoDiv = document.createElement('div');
-            photoDiv.classList.add('relative', 'group', 'mb-4');
-
-            const img = document.createElement('img');
-            img.src = photoUrl;
-            img.alt = 'Daily Life';
-            img.classList.add('w-full', 'h-auto', 'rounded-lg', 'shadow-lg', 'transition-transform', 'transform', 'hover:scale-105');
-
-            const textarea = document.createElement('textarea');
-            textarea.classList.add('absolute', 'inset-0', 'p-4', 'opacity-0', 'group-hover:opacity-100', 'bg-black', 'bg-opacity-75', 'text-white', 'rounded-lg', 'transition-opacity');
-
-            photoDiv.appendChild(img);
-            photoDiv.appendChild(textarea);
-
-            photoSection.appendChild(photoDiv);
-
-            document.getElementById('photo-url').value = '';
+    // Toggle between light and dark themes
+    themeToggle.addEventListener('click', () => {
+        if (body.classList.contains('dark')) {
+            body.classList.remove('dark');
+            body.classList.add('light');
+        } else {
+            body.classList.remove('light');
+            body.classList.add('dark');
         }
     });
 
-    document.querySelectorAll('#blog-section p').forEach(paragraph => {
-        paragraph.addEventListener('click', () => {
-            markAsRead(paragraph);
-        });
+    // Show the blog creation form
+    createNewBlogButton.addEventListener('click', () => {
+        createBlogSection.classList.toggle('hidden');
+    });
+
+    // Add a new blog post
+    blogForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const title = document.getElementById('blog-title').value;
+        const content = document.getElementById('blog-content').value;
+        const imageUrl = document.getElementById('blog-image').value;
+
+        if (title && content && imageUrl) {
+            const article = document.createElement('article');
+            article.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-lg', 'mt-4');
+
+            const h3 = document.createElement('h3');
+            h3.classList.add('text-2xl', 'font-semibold', 'mb-2');
+            h3.textContent = title;
+
+            const img = document.createElement('img');
+            img.classList.add('w-full', 'h-auto', 'rounded-lg', 'shadow-lg', 'mb-4');
+            img.src = imageUrl;
+            img.alt = 'Blog Image';
+
+            const p = document.createElement('p');
+            p.classList.add('text-lg');
+            p.textContent = content;
+            p.addEventListener('click', () => {
+                p.classList.toggle('read');
+            });
+
+            article.appendChild(h3);
+            article.appendChild(img);
+            article.appendChild(p);
+
+            blogSection.appendChild(article);
+
+            blogForm.reset();
+            createBlogSection.classList.add('hidden');
+        }
     });
 });
