@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+ document.addEventListener('DOMContentLoaded', () => {
     const blogForm = document.getElementById('blog-form');
     const blogSection = document.getElementById('blog-section');
     const createBlogButton = document.getElementById('create-blog-button');
