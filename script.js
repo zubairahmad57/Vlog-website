@@ -104,7 +104,8 @@
         actions.classList.add('blog-actions', 'flex', 'justify-between', 'items-center');
 
         const likeButton = document.createElement('button');
-        likeButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>';
+        likeButton.classList.add('text-blue-500');
+        likeButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>';
         likeButton.addEventListener('click', () => {
             blog.likes++;
             saveBlogToLocalStorage(blog);
@@ -112,7 +113,8 @@
         });
 
         const commentButton = document.createElement('button');
-        commentButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6"/></svg>';
+        commentButton.classList.add('text-green-500');
+        commentButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6"/></svg>';
         commentButton.addEventListener('click', () => {
             const comment = prompt('Enter your comment:');
             if (comment) {
@@ -123,13 +125,15 @@
         });
 
         const saveButton = document.createElement('button');
-        saveButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19h14"/></svg>';
+        saveButton.classList.add('text-yellow-500');
+        saveButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19h14"/></svg>';
         saveButton.addEventListener('click', () => {
             alert('Blog saved!');
         });
 
         const moreButton = document.createElement('button');
-        moreButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 6h.01"/></svg>';
+        moreButton.classList.add('text-gray-500');
+        moreButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 6h.01"/></svg>';
         moreButton.addEventListener('click', () => {
             const deleteButton = document.createElement('button');
             deleteButton.innerHTML = 'Delete';
@@ -151,12 +155,12 @@
         const likes = document.createElement('div');
         likes.classList.add('likes', 'text-sm');
         likes.textContent = `${blog.likes} likes`;
-        actions.appendChild(likes);
 
         article.appendChild(h3);
         article.appendChild(img);
         article.appendChild(p);
         article.appendChild(actions);
+        article.appendChild(likes);
 
         blogSection.appendChild(article);
     }
@@ -164,7 +168,12 @@
     // Save blog to localStorage
     function saveBlogToLocalStorage(blog) {
         let blogs = JSON.parse(localStorage.getItem('blogs')) || [];
-        blogs = blogs.map(b => (b.id === blog.id ? blog : b));
+        const existingBlogIndex = blogs.findIndex(b => b.id === blog.id);
+        if (existingBlogIndex !== -1) {
+            blogs[existingBlogIndex] = blog;
+        } else {
+            blogs.push(blog);
+        }
         localStorage.setItem('blogs', JSON.stringify(blogs));
     }
 
@@ -177,7 +186,6 @@
 
     // Update blog post comments
     function updateBlogPostComments(blog) {
-        // You can implement comment display and updating logic here
         alert('Comments updated!');
     }
 
