@@ -128,4 +128,62 @@
         });
 
         const deleteButton = document.createElement('button');
-        deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke
+        deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6M4 6h16M10 6v1m4-1v1M8 6v1m8-1v1M9 6h6"/></svg>';
+        deleteButton.addEventListener('click', () => {
+            if (confirm('Are you sure you want to delete this blog?')) {
+                deleteBlog(blog.id);
+                article.remove();
+            }
+        });
+
+        const saveButton = document.createElement('button');
+        saveButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19h14"/></svg>';
+        saveButton.addEventListener('click', () => {
+            alert('Blog saved!');
+        });
+
+        actions.appendChild(likeButton);
+        actions.appendChild(commentButton);
+        actions.appendChild(deleteButton);
+        actions.appendChild(saveButton);
+
+        const likes = document.createElement('div');
+        likes.classList.add('likes', 'text-sm');
+        likes.textContent = `${blog.likes} likes`;
+        actions.appendChild(likes);
+
+        article.appendChild(h3);
+        article.appendChild(img);
+        article.appendChild(p);
+        article.appendChild(actions);
+
+        blogSection.appendChild(article);
+    }
+
+    // Save blog to localStorage
+    function saveBlogToLocalStorage(blog) {
+        let blogs = JSON.parse(localStorage.getItem('blogs')) || [];
+        blogs = blogs.map(b => (b.id === blog.id ? blog : b));
+        localStorage.setItem('blogs', JSON.stringify(blogs));
+    }
+
+    // Update blog post likes
+    function updateBlogPostLikes(blog) {
+        const article = document.querySelector(`article[data-id="${blog.id}"]`);
+        const likes = article.querySelector('.likes');
+        likes.textContent = `${blog.likes} likes`;
+    }
+
+    // Update blog post comments
+    function updateBlogPostComments(blog) {
+        // You can implement comment display and updating logic here
+        alert('Comments updated!');
+    }
+
+    // Delete blog from localStorage
+    function deleteBlog(id) {
+        let blogs = JSON.parse(localStorage.getItem('blogs')) || [];
+        blogs = blogs.filter(b => b.id !== id);
+        localStorage.setItem('blogs', JSON.stringify(blogs));
+    }
+});
