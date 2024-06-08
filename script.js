@@ -1,30 +1,21 @@
- document.addEventListener("DOMContentLoaded", () => {
-    const themeToggle = document.getElementById('theme-toggle');
-    const createNewBlogButton = document.getElementById('create-new-blog');
-    const createBlogSection = document.getElementById('create-blog-section');
+document.addEventListener('DOMContentLoaded', () => {
     const blogForm = document.getElementById('blog-form');
     const blogSection = document.getElementById('blog-section');
-    const body = document.body;
-
-    // Load blogs from localStorage
-    loadBlogs();
+    const createBlogButton = document.getElementById('create-blog-button');
+    const createBlogSection = document.getElementById('create-blog-section');
+    const themeToggleButton = document.getElementById('theme-toggle');
 
     // Toggle between light and dark themes
-    themeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark');
-        if (body.classList.contains('dark')) {
-            themeToggle.textContent = '🌞';
-        } else {
-            themeToggle.textContent = '🌗';
-        }
+    themeToggleButton.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
     });
 
-    // Show the blog creation form
-    createNewBlogButton.addEventListener('click', () => {
+    // Show blog creation form
+    createBlogButton.addEventListener('click', () => {
         createBlogSection.classList.toggle('hidden');
     });
 
-    // Add a new blog post
+    // Handle blog form submission
     blogForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -32,12 +23,27 @@
         const content = document.getElementById('blog-content').value;
         const imageInput = document.getElementById('blog-image');
         const audioInput = document.getElementById('blog-audio');
-        const imageUrl = URL.createObjectURL(imageInput.files[0]);
-        let audioUrl = null;
 
         if (audioInput.files.length > 0) {
-            audioUrl = URL.createObjectURL(audioInput.files[0]);
+            const audioFile = audioInput.files[0];
+            const audio = document.createElement('audio');
+            audio.src = URL.createObjectURL(audioFile);
+            audio.addEventListener('loadedmetadata', () => {
+                if (audio.duration > 15) {
+                    alert('Please select an audio file of 15 seconds or less.');
+                    return;
+                } else {
+                    processForm(title, content, imageInput.files[0], audioInput.files[0]);
+                }
+            });
+        } else {
+            processForm(title, content, imageInput.files[0], null);
         }
+    });
+
+    function processForm(title, content, imageFile, audioFile) {
+        const imageUrl = URL.createObjectURL(imageFile);
+        const audioUrl = audioFile ? URL.createObjectURL(audioFile) : null;
 
         if (title && content && imageUrl) {
             const blogPost = {
@@ -56,24 +62,13 @@
             blogForm.reset();
             createBlogSection.classList.add('hidden');
         }
-    });
-
-    // Save blog post to localStorage
-    function saveBlog(blogPost) {
-        const blogs = JSON.parse(localStorage.getItem('blogs')) || [];
-        blogs.push(blogPost);
-        localStorage.setItem('blogs', JSON.stringify(blogs));
     }
 
-    // Load blog posts from localStorage
-    function loadBlogs() {
-        const blogs = JSON.parse(localStorage.getItem('blogs')) || [];
-        blogs.forEach(blog => {
-            appendBlogPost(blog);
-        });
-    }
+    // Load blogs from localStorage on page load
+    const savedBlogs = JSON.parse(localStorage.getItem('blogs')) || [];
+    savedBlogs.forEach(blog => appendBlogPost(blog));
 
-    // Append blog post to the blog section
+    // Append a blog post to the DOM
     function appendBlogPost(blog) {
         const article = document.createElement('article');
         article.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-lg', 'mt-4');
@@ -127,25 +122,31 @@
             }
         });
 
-        const deleteButton = document.createElement('button');
-        deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6M4 6h16M10 6v1m4-1v1M8 6v1m8-1v1M9 6h6"/></svg>';
-        deleteButton.addEventListener('click', () => {
-            if (confirm('Are you sure you want to delete this blog?')) {
-                deleteBlog(blog.id);
-                article.remove();
-            }
-        });
-
         const saveButton = document.createElement('button');
         saveButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19h14"/></svg>';
         saveButton.addEventListener('click', () => {
             alert('Blog saved!');
         });
 
+        const moreButton = document.createElement('button');
+        moreButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 6h.01"/></svg>';
+        moreButton.addEventListener('click', () => {
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'Delete';
+            deleteButton.classList.add('text-red-500', 'mt-2');
+            deleteButton.addEventListener('click', () => {
+                if (confirm('Are you sure you want to delete this blog?')) {
+                    deleteBlog(blog.id);
+                    article.remove();
+                }
+            });
+            article.appendChild(deleteButton);
+        });
+
         actions.appendChild(likeButton);
         actions.appendChild(commentButton);
-        actions.appendChild(deleteButton);
         actions.appendChild(saveButton);
+        actions.appendChild(moreButton);
 
         const likes = document.createElement('div');
         likes.classList.add('likes', 'text-sm');
