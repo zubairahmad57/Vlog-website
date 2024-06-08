@@ -1,62 +1,53 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Blog Website</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #fafafa;
-            color: #262626;
-        }
-        .read {
-            color: #999999;
-        }
-        .blog-actions svg {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+    <title>Blog Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="transition-colors duration-500">
-    <div class="fixed top-4 right-4">
-        <button id="theme-toggle" class="p-2 bg-gray-800 text-white rounded-full">🌗</button>
-    </div>
-    <header class="text-center py-8 bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
-        <h1 class="text-5xl font-bold">My Daily Blog</h1>
-        <p class="text-xl mt-2">Sharing moments from my life</p>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-lg p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-semibold">My Blog</h1>
+        <button id="create-blog-button" class="text-blue-500">Create New Blog</button>
     </header>
-    <nav class="text-center py-4">
-        <button id="create-new-blog" class="px-4 py-2 bg-blue-500 text-white rounded-full">Create New Blog</button>
-    </nav>
-    <main class="container mx-auto px-4">
-        <section id="create-blog-section" class="hidden">
-            <h2 class="text-3xl font-bold mb-4">Create a New Blog</h2>
-            <form id="blog-form" class="bg-white p-4 rounded-lg shadow-lg">
-                <label for="blog-title" class="block text-lg font-medium mb-2">Title:</label>
-                <input type="text" id="blog-title" class="w-full p-2 border border-gray-300 rounded-lg mb-4" required>
-                <label for="blog-content" class="block text-lg font-medium mb-2">Content:</label>
-                <textarea id="blog-content" class="w-full p-2 border border-gray-300 rounded-lg mb-4" rows="4" required></textarea>
-                <label for="blog-image" class="block text-lg font-medium mb-2">Image:</label>
-                <input type="file" id="blog-image" class="w-full p-2 border border-gray-300 rounded-lg mb-4" accept="image/*" required>
-                <label for="blog-audio" class="block text-lg font-medium mb-2">Audio (15s max):</label>
-                <input type="file" id="blog-audio" class="w-full p-2 border border-gray-300 rounded-lg mb-4" accept="audio/*">
-                <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded-lg">Add Blog</button>
-            </form>
-        </section>
-        <section id="blog-section" class="mt-8">
-            <h2 class="text-3xl font-bold mb-4">Current Events</h2>
-            <!-- Existing blog posts will be inserted here dynamically -->
-        </section>
-    </main>
-    <footer class="text-center py-8">
-        <p>&copy; 2024 My Blog. All rights reserved.</p>
+
+    <section id="create-blog-section" class="p-4 hidden">
+        <h2 class="text-xl font-semibold mb-2">Create New Blog</h2>
+        <form id="blog-form">
+            <div class="mb-4">
+                <label for="blog-title" class="block text-gray-700 font-semibold">Title:</label>
+                <input type="text" id="blog-title" class="border-gray-300 border w-full px-3 py-1 rounded-md focus:outline-none focus:ring focus:ring-blue-500" required>
+            </div>
+            <div class="mb-4">
+                <label for="blog-content" class="block text-gray-700 font-semibold">Content:</label>
+                <textarea id="blog-content" class="border-gray-300 border w-full px-3 py-1 rounded-md focus:outline-none focus:ring focus:ring-blue-500" rows="4" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="blog-image" class="block text-gray-700 font-semibold">Image:</label>
+                <input type="file" id="blog-image" accept="image/*" class="border-gray-300 border w-full px-3 py-1 rounded-md focus:outline-none focus:ring focus:ring-blue-500" required>
+            </div>
+            <div class="mb-4">
+                <label for="blog-audio" class="block text-gray-700 font-semibold">Audio (Max 15s):</label>
+                <input type="file" id="blog-audio" accept="audio/*" class="border-gray-300 border w-full px-3 py-1 rounded-md focus:outline-none focus:ring focus:ring-blue-500">
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Create Blog</button>
+        </form>
+    </section>
+
+    <section id="blog-section" class="mt-8"></section>
+
+    <footer class="text-center text-gray-500 text-sm mt-8">
+        &copy; 2024 My Blog. All rights reserved.
     </footer>
+
+    <button id="theme-toggle" class="fixed bottom-4 right-4 w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+        </svg>
+    </button>
+
     <script src="script.js"></script>
 </body>
 </html>
+
