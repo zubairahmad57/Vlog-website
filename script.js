@@ -3,12 +3,6 @@
     const blogSection = document.getElementById('blog-section');
     const createBlogButton = document.getElementById('create-blog-button');
     const createBlogSection = document.getElementById('create-blog-section');
-    const themeToggleButton = document.getElementById('theme-toggle');
-
-    // Toggle between light and dark themes
-    themeToggleButton.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-    });
 
     // Show blog creation form
     createBlogButton.addEventListener('click', () => {
@@ -56,17 +50,12 @@
                 comments: []
             };
 
-            saveBlog(blogPost);
             appendBlogPost(blogPost);
 
             blogForm.reset();
             createBlogSection.classList.add('hidden');
         }
     }
-
-    // Load blogs from localStorage on page load
-    const savedBlogs = JSON.parse(localStorage.getItem('blogs')) || [];
-    savedBlogs.forEach(blog => appendBlogPost(blog));
 
     // Append a blog post to the DOM
     function appendBlogPost(blog) {
@@ -85,6 +74,7 @@
 
         if (blog.audioUrl) {
             const audio = document.createElement('audio');
+            audio.controls
             audio.controls = true;
             const source = document.createElement('source');
             source.src = blog.audioUrl;
@@ -108,7 +98,6 @@
         likeButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>';
         likeButton.addEventListener('click', () => {
             blog.likes++;
-            saveBlogToLocalStorage(blog);
             updateBlogPostLikes(blog);
         });
 
@@ -119,7 +108,6 @@
             const comment = prompt('Enter your comment:');
             if (comment) {
                 blog.comments.push(comment);
-                saveBlogToLocalStorage(blog);
                 updateBlogPostComments(blog);
             }
         });
@@ -163,18 +151,6 @@
         article.appendChild(likes);
 
         blogSection.appendChild(article);
-    }
-
-    // Save blog to localStorage
-    function saveBlogToLocalStorage(blog) {
-        let blogs = JSON.parse(localStorage.getItem('blogs')) || [];
-        const existingBlogIndex = blogs.findIndex(b => b.id === blog.id);
-        if (existingBlogIndex !== -1) {
-            blogs[existingBlogIndex] = blog;
-        } else {
-            blogs.push(blog);
-        }
-        localStorage.setItem('blogs', JSON.stringify(blogs));
     }
 
     // Update blog post likes
