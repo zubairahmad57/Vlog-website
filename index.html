@@ -1,0 +1,52 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vlog Website</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .theme-dark {
+            background-color: #1a202c;
+            color: #cbd5e0;
+        }
+        .theme-light {
+            background-color: #f7fafc;
+            color: #2d3748;
+        }
+        .read {
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="theme-light transition-colors duration-500">
+    <div class="fixed top-4 right-4">
+        <button id="theme-toggle" class="p-2 bg-gray-800 text-white rounded-full">🌗</button>
+    </div>
+    <header class="text-center py-8">
+        <h1 class="text-5xl font-bold">My Daily Vlog</h1>
+        <p class="text-xl mt-2">Sharing moments from my life</p>
+    </header>
+    <main class="container mx-auto px-4">
+        <section id="photo-section" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Repeat this block for each picture -->
+            <div class="relative group">
+                <img src="https://via.placeholder.com/300" alt="Daily Life" class="w-full h-auto rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                <textarea class="absolute inset-0 p-4 opacity-0 group-hover:opacity-100 bg-black bg-opacity-75 text-white rounded-lg transition-opacity"></textarea>
+            </div>
+        </section>
+    </main>
+    <footer class="text-center py-8">
+        <p>&copy; 2024 My Vlog. All rights reserved.</p>
+    </footer>
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('theme-dark');
+            body.classList.toggle('theme-light');
+        });
+    </script>
+</body>
+</html>
