@@ -28,7 +28,8 @@
 
         const title = document.getElementById('blog-title').value;
         const content = document.getElementById('blog-content').value;
-        const imageUrl = document.getElementById('blog-image').value;
+        const imageInput = document.getElementById('blog-image');
+        const imageUrl = URL.createObjectURL(imageInput.files[0]);
 
         if (title && content && imageUrl) {
             const article = document.createElement('article');
