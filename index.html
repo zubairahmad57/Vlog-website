@@ -13,13 +13,21 @@
         .read {
             color: #999999;
         }
+        .blog-actions svg {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body class="transition-colors duration-500">
     <div class="fixed top-4 right-4">
         <button id="theme-toggle" class="p-2 bg-gray-800 text-white rounded-full">🌗</button>
     </div>
-    <header class="text-center py-8">
+    <header class="text-center py-8 bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
         <h1 class="text-5xl font-bold">My Daily Blog</h1>
         <p class="text-xl mt-2">Sharing moments from my life</p>
     </header>
@@ -36,6 +44,8 @@
                 <textarea id="blog-content" class="w-full p-2 border border-gray-300 rounded-lg mb-4" rows="4" required></textarea>
                 <label for="blog-image" class="block text-lg font-medium mb-2">Image:</label>
                 <input type="file" id="blog-image" class="w-full p-2 border border-gray-300 rounded-lg mb-4" accept="image/*" required>
+                <label for="blog-audio" class="block text-lg font-medium mb-2">Audio (15s max):</label>
+                <input type="file" id="blog-audio" class="w-full p-2 border border-gray-300 rounded-lg mb-4" accept="audio/*">
                 <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded-lg">Add Blog</button>
             </form>
         </section>
