@@ -6,63 +6,42 @@
     <title>My Blog Website</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
-        .theme-dark {
-            background-color: #1a202c;
-            color: #cbd5e0;
-        }
-        .theme-light {
+        body {
             background-color: #f7fafc;
             color: #2d3748;
-        }
-        .theme-blue {
-            background-color: #ebf8ff;
-            color: #2c5282;
-        }
-        .theme-green {
-            background-color: #f0fff4;
-            color: #2f855a;
         }
         .read {
             color: #9ca3af;
         }
     </style>
 </head>
-<body class="theme-light transition-colors duration-500">
-    <div class="fixed top-4 right-4 flex space-x-2">
-        <button id="theme-light" class="p-2 bg-gray-800 text-white rounded-full">🌞</button>
-        <button id="theme-dark" class="p-2 bg-gray-800 text-white rounded-full">🌗</button>
-        <button id="theme-blue" class="p-2 bg-gray-800 text-white rounded-full">🔵</button>
-        <button id="theme-green" class="p-2 bg-gray-800 text-white rounded-full">🟢</button>
+<body class="transition-colors duration-500">
+    <div class="fixed top-4 right-4">
+        <button id="theme-toggle" class="p-2 bg-gray-800 text-white rounded-full">🌗</button>
     </div>
     <header class="text-center py-8">
         <h1 class="text-5xl font-bold">My Daily Blog</h1>
         <p class="text-xl mt-2">Sharing moments from my life</p>
     </header>
+    <nav class="text-center py-4">
+        <button id="create-new-blog" class="px-4 py-2 bg-blue-500 text-white rounded-full">Create New Blog</button>
+    </nav>
     <main class="container mx-auto px-4">
-        <section id="photo-section" class="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
-            <div class="relative group mb-4">
-                <img src="https://images.unsplash.com/photo-1585487008983-17c08717b07b" alt="Humayun's Tomb" class="w-full h-auto rounded-lg shadow-lg transition-transform transform hover:scale-105">
-                <textarea class="absolute inset-0 p-4 opacity-0 group-hover:opacity-100 bg-black bg-opacity-75 text-white rounded-lg transition-opacity">Humayun's Tomb is a mesmerizing place where you can feel the vibes of ancient royalty. The peaceful ambiance and the song "Maula Mere Maula Mere" playing in the background create a perfect scene. When you visit, try making a reel with different angles and clips; it will look fantastic!</textarea>
-            </div>
+        <section id="create-blog-section" class="hidden">
+            <h2 class="text-3xl font-bold mb-4">Create a New Blog</h2>
+            <form id="blog-form" class="bg-white p-4 rounded-lg shadow-lg">
+                <label for="blog-title" class="block text-lg font-medium mb-2">Title:</label>
+                <input type="text" id="blog-title" class="w-full p-2 border border-gray-300 rounded-lg mb-4" required>
+                <label for="blog-content" class="block text-lg font-medium mb-2">Content:</label>
+                <textarea id="blog-content" class="w-full p-2 border border-gray-300 rounded-lg mb-4" rows="4" required></textarea>
+                <label for="blog-image" class="block text-lg font-medium mb-2">Image URL:</label>
+                <input type="url" id="blog-image" class="w-full p-2 border border-gray-300 rounded-lg mb-4" required>
+                <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded-lg">Add Blog</button>
+            </form>
         </section>
         <section id="blog-section" class="mt-8">
             <h2 class="text-3xl font-bold mb-4">Current Events</h2>
-            <article class="bg-white p-4 rounded-lg shadow-lg">
-                <h3 class="text-2xl font-semibold mb-2">A Day in My Life - June 8, 2024</h3>
-                <p class="text-lg" onclick="markAsRead(this)">Today, I started my day with a refreshing morning walk in the park. The weather was perfect, with a light breeze and clear skies. Later, I visited a new café in town and tried their special latte. In the afternoon, I spent some quality time reading a book at the local library. The evening was all about unwinding with a good movie and homemade dinner. It was a perfect blend of productivity and relaxation!</p>
-            </article>
-            <article class="bg-white p-4 rounded-lg shadow-lg mt-4">
-                <h3 class="text-2xl font-semibold mb-2">Humayun's Tomb Visit</h3>
-                <p class="text-lg" onclick="markAsRead(this)">Visiting Humayun's Tomb gives a strong sense of ancient royalty. The tranquility of the place combined with the song "Maula Mere Maula Mere" playing in the background creates an ethereal atmosphere. If you ever visit, I highly recommend trying to make a reel with different angles and video clips; it will look amazing!</p>
-            </article>
-        </section>
-        <section id="add-photo-section" class="mt-8">
-            <h2 class="text-3xl font-bold mb-4">Add a New Photo</h2>
-            <form id="photo-form" class="bg-white p-4 rounded-lg shadow-lg">
-                <label for="photo-url" class="block text-lg font-medium mb-2">Photo URL:</label>
-                <input type="url" id="photo-url" class="w-full p-2 border border-gray-300 rounded-lg mb-4" required>
-                <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded-lg">Add Photo</button>
-            </form>
+            <!-- Existing blog posts will be inserted here dynamically -->
         </section>
     </main>
     <footer class="text-center py-8">
