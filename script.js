@@ -4,9 +4,12 @@
     const createBlogButton = document.getElementById('create-blog-button');
     const createBlogSection = document.getElementById('create-blog-section');
 
-    // Show blog creation form
+    // Show blog creation form with animation
     createBlogButton.addEventListener('click', () => {
         createBlogSection.classList.toggle('hidden');
+        setTimeout(() => {
+            createBlogSection.classList.toggle('scale-0');
+        }, 10);
     });
 
     // Handle blog form submission
@@ -18,21 +21,7 @@
         const imageInput = document.getElementById('blog-image');
         const audioInput = document.getElementById('blog-audio');
 
-        if (audioInput.files.length > 0) {
-            const audioFile = audioInput.files[0];
-            const audio = document.createElement('audio');
-            audio.src = URL.createObjectURL(audioFile);
-            audio.addEventListener('loadedmetadata', () => {
-                if (audio.duration > 15) {
-                    alert('Please select an audio file of 15 seconds or less.');
-                    return;
-                } else {
-                    processForm(title, content, imageInput.files[0], audioInput.files[0]);
-                }
-            });
-        } else {
-            processForm(title, content, imageInput.files[0], null);
-        }
+        processForm(title, content, imageInput.files[0], audioInput.files.length > 0 ? audioInput.files[0] : null);
     });
 
     function processForm(title, content, imageFile, audioFile) {
@@ -50,14 +39,21 @@
                 comments: []
             };
 
+            saveBlogPost(blogPost);
             appendBlogPost(blogPost);
 
             blogForm.reset();
             createBlogSection.classList.add('hidden');
+            createBlogSection.classList.add('scale-0');
         }
     }
 
-    // Append a blog post to the DOM
+    function saveBlogPost(blog) {
+        let blogs = JSON.parse(localStorage.getItem('blogs')) || [];
+        blogs.push(blog);
+        localStorage.setItem('blogs', JSON.stringify(blogs));
+    }
+
     function appendBlogPost(blog) {
         const article = document.createElement('article');
         article.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-lg', 'mt-4');
@@ -68,13 +64,12 @@
         h3.textContent = blog.title;
 
         const img = document.createElement('img');
-        img.classList.add('w-full', 'h-auto', 'rounded-lg', 'shadow-lg', 'mb-4');
+        img.classList.add('w-full', 'h-auto', 'rounded-lg', 'shadow-lg', 'mb-4', 'animate-slide');
         img.src = blog.imageUrl;
         img.alt = 'Blog Image';
 
         if (blog.audioUrl) {
             const audio = document.createElement('audio');
-            audio.controls
             audio.controls = true;
             const source = document.createElement('source');
             source.src = blog.audioUrl;
@@ -153,22 +148,26 @@
         blogSection.appendChild(article);
     }
 
-    // Update blog post likes
     function updateBlogPostLikes(blog) {
         const article = document.querySelector(`article[data-id="${blog.id}"]`);
         const likes = article.querySelector('.likes');
         likes.textContent = `${blog.likes} likes`;
     }
 
-    // Update blog post comments
     function updateBlogPostComments(blog) {
         alert('Comments updated!');
     }
 
-    // Delete blog from localStorage
     function deleteBlog(id) {
         let blogs = JSON.parse(localStorage.getItem('blogs')) || [];
         blogs = blogs.filter(b => b.id !== id);
         localStorage.setItem('blogs', JSON.stringify(blogs));
     }
+
+    function loadBlogs() {
+        const blogs = JSON.parse(localStorage.getItem('blogs')) || [];
+        blogs.forEach(blog => appendBlogPost(blog));
+    }
+
+    loadBlogs();
 });
